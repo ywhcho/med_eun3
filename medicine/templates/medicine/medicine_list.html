@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}의약품 목록{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">의약품 전체 목록</h2>
+
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead class="table-light">
+            <tr>
+                <th width="20%">약품명</th>
+                <th width="20%">성분명</th>
+                <th width="20%">회사명</th>
+                <th width="30%">효능</th>
+                <th width="10%">상세</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for medicine in page_obj %}
+                <tr>
+                    <td>{{ medicine.drug_name }}</td>
+                    <td>{{ medicine.ingredient }}</td>
+                    <td>{{ medicine.company }}</td>
+                    <td>{{ medicine.efficacy|truncatewords:10 }}</td>
+                    <td>
+                        <a href="{% url 'medicine:detail' medicine.pk %}" class="btn btn-sm btn-outline-primary">보기</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">의약품 정보가 없습니다.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Pagination -->
+{% if page_obj.has_other_pages %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">&laquo; 처음</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">이전</a>
+                </li>
+            {% endif %}
+            
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ num }}</span>
+                    </li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">다음</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">마지막 &raquo;</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
+{% endblock %}

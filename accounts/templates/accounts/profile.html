@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}내 정보{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3>내 정보</h3>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th width="30%">사용자명</th>
+                            <td>{{ user.username }}</td>
+                        </tr>
+                        <tr>
+                            <th>이름</th>
+                            <td>{{ user.first_name }} {{ user.last_name }}</td>
+                        </tr>
+                        <tr>
+                            <th>이메일</th>
+                            <td>{{ user.email }}</td>
+                        </tr>
+                        <tr>
+                            <th>전화번호</th>
+                            <td>{{ profile.phone|default:"미등록" }}</td>
+                        </tr>
+                        <tr>
+                            <th>소개</th>
+                            <td>{{ profile.bio|default:"미등록" }}</td>
+                        </tr>
+                        <tr>
+                            <th>가입일</th>
+                            <td>{{ profile.created_at|date:"Y년 m월 d일" }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="text-end">
+                    <a href="{% url 'accounts:edit_profile' %}" class="btn btn-primary">정보 수정</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
