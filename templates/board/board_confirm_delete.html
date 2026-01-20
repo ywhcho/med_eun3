@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}게시글 삭제{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>게시글 삭제</h1>
+    <p style="margin: 2rem 0;">정말로 이 게시글을 삭제하시겠습니까?</p>
+    <div style="padding: 1rem; background-color: #f8f9fa; border-left: 4px solid #e74c3c;">
+        <h3>{{ board.title }}</h3>
+        <p style="margin-top: 0.5rem; color: #666;">{{ board.content|truncatewords:30 }}</p>
+    </div>
+    <form method="post" style="margin-top: 2rem;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">삭제</button>
+        <a href="{% url 'board:detail' board.pk %}" class="btn">취소</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}프로필{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>프로필</h1>
+    <div style="margin-top: 2rem;">
+        <p><strong>사용자명:</strong> {{ user.username }}</p>
+        <p><strong>이메일:</strong> {{ user.email }}</p>
+        <p><strong>이름:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+        <p><strong>가입일:</strong> {{ user.date_joined|date:"Y년 m월 d일" }}</p>
+    </div>
+    <div style="margin-top: 2rem;">
+        <a href="{% url 'accounts:profile_edit' %}" class="btn">회원정보 수정</a>
+        <a href="{% url 'pages:home' %}" class="btn btn-danger">홈으로</a>
+    </div>
+</div>
+{% endblock %}

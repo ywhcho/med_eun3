@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}게시판{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h1>게시판</h1>
+        {% if user.is_authenticated %}
+        <a href="{% url 'board:create' %}" class="btn btn-success">글쓰기</a>
+        {% endif %}
+    </div>
+    
+    <table style="margin-top: 2rem;">
+        <thead>
+            <tr>
+                <th style="width: 10%;">번호</th>
+                <th style="width: 50%;">제목</th>
+                <th style="width: 15%;">작성자</th>
+                <th style="width: 10%;">조회수</th>
+                <th style="width: 15%;">작성일</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for board in boards %}
+            <tr>
+                <td>{{ board.id }}</td>
+                <td><a href="{% url 'board:detail' board.pk %}" style="text-decoration: none; color: #2c3e50;">{{ board.title }}</a></td>
+                <td>{{ board.author.username }}</td>
+                <td>{{ board.views }}</td>
+                <td>{{ board.created_at|date:"Y-m-d" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="text-align: center;">게시글이 없습니다.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if board %}게시글 수정{% else %}게시글 작성{% endif %}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>{% if board %}게시글 수정{% else %}게시글 작성{% endif %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="title">제목</label>
+            <input type="text" id="title" name="title" value="{% if board %}{{ board.title }}{% endif %}" required>
+        </div>
+        <div class="form-group">
+            <label for="content">내용</label>
+            <textarea id="content" name="content" required>{% if board %}{{ board.content }}{% endif %}</textarea>
+        </div>
+        <button type="submit" class="btn btn-success">{% if board %}수정{% else %}작성{% endif %}</button>
+        <a href="{% if board %}{% url 'board:detail' board.pk %}{% else %}{% url 'board:list' %}{% endif %}" class="btn btn-danger">취소</a>
+    </form>
+</div>
+{% endblock %}

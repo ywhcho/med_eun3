@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ board.title }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>{{ board.title }}</h1>
+    <div style="color: #666; margin-top: 1rem; padding: 1rem 0; border-bottom: 1px solid #ddd;">
+        <span>작성자: {{ board.author.username }}</span> | 
+        <span>작성일: {{ board.created_at|date:"Y년 m월 d일 H:i" }}</span> | 
+        <span>조회수: {{ board.views }}</span>
+    </div>
+    
+    <div style="margin: 2rem 0; min-height: 200px; line-height: 1.8;">
+        {{ board.content|linebreaksbr }}
+    </div>
+    
+    <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #ddd;">
+        <a href="{% url 'board:list' %}" class="btn">목록</a>
+        {% if user == board.author %}
+        <a href="{% url 'board:edit' board.pk %}" class="btn btn-success">수정</a>
+        <a href="{% url 'board:delete' board.pk %}" class="btn btn-danger">삭제</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

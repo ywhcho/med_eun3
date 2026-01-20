@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ filter_type }}별 의약정보{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>{{ filter_type }}: {{ filter_value }}</h1>
+    
+    <table style="margin-top: 2rem;">
+        <thead>
+            <tr>
+                <th>약품명</th>
+                <th>성분명</th>
+                <th>회사명</th>
+                <th>용량</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for medicine in medicines %}
+            <tr>
+                <td><a href="{% url 'medicine:detail' medicine.pk %}" style="text-decoration: none; color: #2c3e50;">{{ medicine.name }}</a></td>
+                <td>{{ medicine.ingredient }}</td>
+                <td>{{ medicine.company }}</td>
+                <td>{{ medicine.dosage }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="text-align: center;">해당하는 의약품이 없습니다.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div style="margin-top: 2rem;">
+        <a href="{% url 'medicine:list' %}" class="btn">전체 목록</a>
+    </div>
+</div>
+{% endblock %}

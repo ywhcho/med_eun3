@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}의약품 검색{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>의약품 검색</h1>
+    
+    <form action="{% url 'medicine:search' %}" method="get" style="margin: 2rem 0;">
+        <div style="display: flex; gap: 1rem;">
+            <input type="text" name="q" value="{{ query }}" placeholder="약품명, 성분명, 효능으로 검색..." style="flex: 1; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px;">
+            <button type="submit" class="btn">검색</button>
+        </div>
+    </form>
+    
+    {% if query %}
+    <p style="margin-bottom: 1rem; color: #666;">
+        "<strong>{{ query }}</strong>" 검색 결과: {{ medicines.count }}개
+    </p>
+    {% endif %}
+    
+    <table>
+        <thead>
+            <tr>
+                <th>약품명</th>
+                <th>성분명</th>
+                <th>회사명</th>
+                <th>효능</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for medicine in medicines %}
+            <tr>
+                <td><a href="{% url 'medicine:detail' medicine.pk %}" style="text-decoration: none; color: #2c3e50;">{{ medicine.name }}</a></td>
+                <td>{{ medicine.ingredient }}</td>
+                <td>{{ medicine.company }}</td>
+                <td>{{ medicine.efficacy|truncatewords:10 }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="text-align: center;">
+                    {% if query %}
+                    검색 결과가 없습니다.
+                    {% else %}
+                    검색어를 입력해주세요.
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div style="margin-top: 2rem;">
+        <a href="{% url 'medicine:list' %}" class="btn">전체 목록</a>
+    </div>
+</div>
+{% endblock %}
