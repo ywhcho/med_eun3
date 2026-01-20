@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.db.models import F
 from .models import Post
 from .forms import PostForm
 
@@ -18,9 +19,9 @@ def post_list(request):
 def post_detail(request, pk):
     """게시글 상세"""
     post = get_object_or_404(Post, pk=pk)
-    # 조회수 증가
-    post.views += 1
-    post.save()
+    # 조회수 증가 (F() 표현식 사용으로 race condition 방지)
+    Post.objects.filter(pk=pk).update(views=F('views') + 1)
+    post.refresh_from_db()
     return render(request, 'board/post_detail.html', {'post': post})
 
 @login_required
