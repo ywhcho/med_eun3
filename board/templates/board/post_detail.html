@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3>{{ post.title }}</h3>
+        <div class="text-muted">
+            <small>
+                작성자: {{ post.author.username }} | 
+                작성일: {{ post.created_at|date:"Y년 m월 d일 H:i" }} | 
+                조회수: {{ post.views }}
+            </small>
+        </div>
+    </div>
+    <div class="card-body">
+        <div style="white-space: pre-wrap;">{{ post.content }}</div>
+    </div>
+    <div class="card-footer">
+        <div class="d-flex justify-content-between">
+            <a href="{% url 'board:list' %}" class="btn btn-secondary">목록</a>
+            <div>
+                {% if user == post.author %}
+                    <a href="{% url 'board:update' post.pk %}" class="btn btn-primary">수정</a>
+                    <a href="{% url 'board:delete' post.pk %}" class="btn btn-danger">삭제</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

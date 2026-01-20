@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}효능으로 검색{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">효능으로 의약품 검색</h2>
+
+<div class="row justify-content-center mb-4">
+    <div class="col-md-8">
+        <form method="get" class="card">
+            <div class="card-body">
+                <div class="input-group">
+                    <input type="text" 
+                           name="q" 
+                           class="form-control form-control-lg" 
+                           placeholder="효능을 입력하세요 (예: 해열, 진통, 소화 등)" 
+                           value="{{ query }}">
+                    <button class="btn btn-primary btn-lg" type="submit">검색</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if query %}
+    <h4 class="mb-3">"{{ query }}" 검색 결과</h4>
+    
+    {% if page_obj %}
+        <p class="text-muted">총 {{ page_obj.paginator.count }}개의 의약품이 검색되었습니다.</p>
+        
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th width="20%">약품명</th>
+                        <th width="15%">성분명</th>
+                        <th width="15%">회사명</th>
+                        <th width="40%">효능</th>
+                        <th width="10%">상세</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for medicine in page_obj %}
+                        <tr>
+                            <td>{{ medicine.drug_name }}</td>
+                            <td>{{ medicine.ingredient }}</td>
+                            <td>{{ medicine.company }}</td>
+                            <td>{{ medicine.efficacy|truncatewords:15 }}</td>
+                            <td>
+                                <a href="{% url 'medicine:detail' medicine.pk %}" class="btn btn-sm btn-outline-primary">보기</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Pagination -->
+        {% if page_obj.has_other_pages %}
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?q={{ query }}&page=1">&laquo; 처음</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?q={{ query }}&page={{ page_obj.previous_page_number }}">이전</a>
+                        </li>
+                    {% endif %}
+                    
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ num }}</span>
+                            </li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                            <li class="page-item">
+                                <a class="page-link" href="?q={{ query }}&page={{ num }}">{{ num }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?q={{ query }}&page={{ page_obj.next_page_number }}">다음</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?q={{ query }}&page={{ page_obj.paginator.num_pages }}">마지막 &raquo;</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+    {% else %}
+        <div class="alert alert-warning">
+            <h5>검색 결과가 없습니다</h5>
+            <p class="mb-0">다른 키워드로 검색해보세요.</p>
+        </div>
+    {% endif %}
+{% else %}
+    <div class="alert alert-info">
+        <h5>검색 안내</h5>
+        <p>효능 키워드를 입력하여 의약품을 검색할 수 있습니다.</p>
+        <p class="mb-0">예: 해열, 진통, 소화불량, 감기, 두통 등</p>
+    </div>
+{% endif %}
+{% endblock %}

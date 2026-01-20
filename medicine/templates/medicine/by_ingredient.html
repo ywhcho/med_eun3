@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}성분별 의약품 보기{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">성분별 의약품 보기</h2>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">성분 목록</h5>
+            </div>
+            <div class="list-group list-group-flush" style="max-height: 600px; overflow-y: auto;">
+                {% for ingredient in ingredients %}
+                    <a href="?ingredient={{ ingredient }}" 
+                       class="list-group-item list-group-item-action {% if ingredient == selected_ingredient %}active{% endif %}">
+                        {{ ingredient }}
+                    </a>
+                {% empty %}
+                    <div class="list-group-item">성분 정보가 없습니다.</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-9">
+        {% if selected_ingredient %}
+            <h4 class="mb-3">{{ selected_ingredient }} 성분 의약품</h4>
+            
+            {% if page_obj %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th width="30%">약품명</th>
+                                <th width="25%">회사명</th>
+                                <th width="35%">효능</th>
+                                <th width="10%">상세</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for medicine in page_obj %}
+                                <tr>
+                                    <td>{{ medicine.drug_name }}</td>
+                                    <td>{{ medicine.company }}</td>
+                                    <td>{{ medicine.efficacy|truncatewords:8 }}</td>
+                                    <td>
+                                        <a href="{% url 'medicine:detail' medicine.pk %}" class="btn btn-sm btn-outline-primary">보기</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Pagination -->
+                {% if page_obj.has_other_pages %}
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?ingredient={{ selected_ingredient }}&page=1">&laquo; 처음</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?ingredient={{ selected_ingredient }}&page={{ page_obj.previous_page_number }}">이전</a>
+                                </li>
+                            {% endif %}
+                            
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if page_obj.number == num %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ num }}</span>
+                                    </li>
+                                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?ingredient={{ selected_ingredient }}&page={{ num }}">{{ num }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?ingredient={{ selected_ingredient }}&page={{ page_obj.next_page_number }}">다음</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?ingredient={{ selected_ingredient }}&page={{ page_obj.paginator.num_pages }}">마지막 &raquo;</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+            {% endif %}
+        {% else %}
+            <div class="alert alert-info">
+                <h5>성분을 선택해주세요</h5>
+                <p class="mb-0">왼쪽 목록에서 성분을 선택하면 해당 성분의 의약품을 볼 수 있습니다.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

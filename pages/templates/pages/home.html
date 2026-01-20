@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}홈 - 의약품 안전사용 정보{% endblock %}
+
+{% block content %}
+<div class="jumbotron bg-light p-5 rounded-3 mb-4">
+    <h1 class="display-4">의약품 안전사용 정보 시스템</h1>
+    <p class="lead">Med Eun3에 오신 것을 환영합니다</p>
+    <hr class="my-4">
+    <p>의약품에 대한 정확한 정보를 제공하고 안전한 사용을 도모하는 전문 정보 시스템입니다.</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'medicine:list' %}" role="button">의약정보 보기</a>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">게시판</h5>
+                <p class="card-text">다양한 의약품 관련 정보를 공유하고 소통할 수 있는 게시판입니다.</p>
+                <a href="{% url 'board:list' %}" class="btn btn-outline-primary">게시판 가기</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">의약정보 검색</h5>
+                <p class="card-text">성분별, 회사별, 효능별로 의약품 정보를 검색할 수 있습니다.</p>
+                <a href="{% url 'medicine:search' %}" class="btn btn-outline-primary">검색하기</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">회사 소개</h5>
+                <p class="card-text">Med Eun3는 의약품 안전사용을 위한 전문 정보를 제공합니다.</p>
+                <a href="{% url 'pages:about' %}" class="btn btn-outline-primary">자세히 보기</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

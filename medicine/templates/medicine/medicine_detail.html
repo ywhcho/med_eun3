@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ medicine.drug_name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h3>{{ medicine.drug_name }}</h3>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th width="20%" class="table-light">성분명</th>
+                    <td>{{ medicine.ingredient }}</td>
+                </tr>
+                <tr>
+                    <th class="table-light">회사명</th>
+                    <td>{{ medicine.company }}</td>
+                </tr>
+                <tr>
+                    <th class="table-light">효능</th>
+                    <td style="white-space: pre-wrap;">{{ medicine.efficacy }}</td>
+                </tr>
+                <tr>
+                    <th class="table-light">용량</th>
+                    <td style="white-space: pre-wrap;">{{ medicine.dosage }}</td>
+                </tr>
+                <tr>
+                    <th class="table-light">주의사항</th>
+                    <td style="white-space: pre-wrap;">{{ medicine.precautions }}</td>
+                </tr>
+                <tr>
+                    <th class="table-light">등록일</th>
+                    <td>{{ medicine.created_at|date:"Y년 m월 d일" }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="text-end">
+            <a href="{% url 'medicine:list' %}" class="btn btn-secondary">목록으로</a>
+        </div>
+    </div>
+</div>
+
+<div class="alert alert-warning mt-3">
+    <strong>주의:</strong> 의약품은 반드시 전문가(의사, 약사)의 지시에 따라 사용해야 합니다.
+</div>
+{% endblock %}
