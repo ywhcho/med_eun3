@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}의약정보{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>의약정보</h1>
+    
+    <div style="margin: 2rem 0; padding: 1.5rem; background-color: #f8f9fa; border-radius: 4px;">
+        <h3>검색 및 필터</h3>
+        <div style="margin-top: 1rem;">
+            <form action="{% url 'medicine:search' %}" method="get" style="margin-bottom: 1rem;">
+                <div style="display: flex; gap: 1rem;">
+                    <input type="text" name="q" placeholder="약품명, 성분명, 효능으로 검색..." style="flex: 1; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px;">
+                    <button type="submit" class="btn">검색</button>
+                </div>
+            </form>
+            
+            <div style="margin-top: 1.5rem;">
+                <h4>성분별 보기</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
+                    {% for ingredient in ingredients %}
+                    <a href="{% url 'medicine:by_ingredient' ingredient %}" style="padding: 0.5rem 1rem; background-color: #3498db; color: white; text-decoration: none; border-radius: 4px; font-size: 0.9rem;">{{ ingredient }}</a>
+                    {% empty %}
+                    <p>등록된 성분이 없습니다.</p>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div style="margin-top: 1.5rem;">
+                <h4>회사별 보기</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
+                    {% for company in companies %}
+                    <a href="{% url 'medicine:by_company' company %}" style="padding: 0.5rem 1rem; background-color: #27ae60; color: white; text-decoration: none; border-radius: 4px; font-size: 0.9rem;">{{ company }}</a>
+                    {% empty %}
+                    <p>등록된 회사가 없습니다.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <h3>전체 의약품 목록</h3>
+    <table style="margin-top: 1rem;">
+        <thead>
+            <tr>
+                <th>약품명</th>
+                <th>성분명</th>
+                <th>회사명</th>
+                <th>등록일</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for medicine in medicines %}
+            <tr>
+                <td><a href="{% url 'medicine:detail' medicine.pk %}" style="text-decoration: none; color: #2c3e50;">{{ medicine.name }}</a></td>
+                <td>{{ medicine.ingredient }}</td>
+                <td>{{ medicine.company }}</td>
+                <td>{{ medicine.created_at|date:"Y-m-d" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="text-align: center;">등록된 의약품이 없습니다.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

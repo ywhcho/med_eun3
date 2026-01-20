@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}홈 - 의약정보 관리 시스템{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>의약정보 관리 시스템에 오신 것을 환영합니다</h1>
+    <p style="margin-top: 1rem; font-size: 1.1rem; line-height: 1.8;">
+        의약품 안전사용을 위한 전문 정보 관리 시스템입니다.<br>
+        의약품 정보를 체계적으로 관리하고 검색할 수 있습니다.
+    </p>
+    
+    {% if not user.is_authenticated %}
+    <div style="margin-top: 2rem;">
+        <a href="{% url 'accounts:login' %}" class="btn">로그인</a>
+        <a href="{% url 'accounts:signup' %}" class="btn btn-success">회원가입</a>
+    </div>
+    {% else %}
+    <div style="margin-top: 2rem;">
+        <h3>주요 기능</h3>
+        <ul style="margin-top: 1rem; margin-left: 2rem; line-height: 2;">
+            <li><a href="{% url 'board:list' %}">게시판</a> - 의약품 관련 정보를 공유하고 소통합니다</li>
+            <li><a href="{% url 'medicine:list' %}">의약정보 보기</a> - 의약품 정보를 성분별, 회사별로 검색할 수 있습니다</li>
+            <li><a href="{% url 'pages:about' %}">About Us</a> - 회사 소개</li>
+        </ul>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

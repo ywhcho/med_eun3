@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ medicine.name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>{{ medicine.name }}</h1>
+    
+    <table style="margin-top: 2rem;">
+        <tr>
+            <th style="width: 20%; background-color: #34495e;">약품명</th>
+            <td>{{ medicine.name }}</td>
+        </tr>
+        <tr>
+            <th style="background-color: #34495e;">성분명</th>
+            <td>{{ medicine.ingredient }}</td>
+        </tr>
+        <tr>
+            <th style="background-color: #34495e;">회사명</th>
+            <td>{{ medicine.company }}</td>
+        </tr>
+        <tr>
+            <th style="background-color: #34495e;">용량</th>
+            <td>{{ medicine.dosage }}</td>
+        </tr>
+        <tr>
+            <th style="background-color: #34495e;">효능</th>
+            <td>{{ medicine.efficacy|linebreaksbr }}</td>
+        </tr>
+        <tr>
+            <th style="background-color: #34495e;">주의사항</th>
+            <td>{{ medicine.precautions|linebreaksbr }}</td>
+        </tr>
+        <tr>
+            <th style="background-color: #34495e;">등록일</th>
+            <td>{{ medicine.created_at|date:"Y년 m월 d일" }}</td>
+        </tr>
+    </table>
+    
+    <div style="margin-top: 2rem;">
+        <a href="{% url 'medicine:list' %}" class="btn">목록으로</a>
+        <a href="{% url 'medicine:by_ingredient' medicine.ingredient %}" class="btn">같은 성분 보기</a>
+        <a href="{% url 'medicine:by_company' medicine.company %}" class="btn">같은 회사 보기</a>
+    </div>
+</div>
+{% endblock %}
